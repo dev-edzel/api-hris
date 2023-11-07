@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterEmployeeRequest;
 use App\Models\Department;
 use App\Models\Employee;
+use App\Models\Overtime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -69,7 +70,9 @@ class EmployeeController extends Controller
     {
         Auth::guard('employee')->logout();
 
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json([
+            'message' => 'Successfully logged out'
+        ]);
     }
 
     public function refresh()
@@ -88,30 +91,63 @@ class EmployeeController extends Controller
         return response()->json(Auth::guard('employee')->user());
     }
 
-    // public function changePassword(Request $request)
+    // public function changeOvertimeStatus(Request $request)
     // {
-    //     $validated = $request->validate([
-    //         'password' => 'required|min:6'
-    //     ]);
+    //     $employee = Auth::guard('employee')->user();
 
-    //     $user = $request->user();
+    //     if ($employee->department_id->id === 3) {
+    //         $overtimeId = $request->input('overtime_id');
+    //         $overtime = Overtime::find($overtimeId);
 
-    //     $user->password = Hash::make($validated['password']);
-    //     $user->save();
+    //         if ($overtime) {
+    //             $status = $request->input('status');
 
-    //     foreach ($user->tokens as $token) {
-    //         $token->delete();
+    //             if ($status->id === 1) {
+    //                 $overtime->status = 'approved';
+
+    //             } elseif ($status->id === 2) {
+    //                 $overtime->status = 'declined';
+
+    //             } else {
+    //                 return response()->json([
+    //                     'error' => 'Invalid status provided'
+    //                 ], 400);
+    //             }
+
+    //             $overtime->save();
+
+    //             return response()->json([
+    //                 'message' => 'Overtime status updated successfully'
+    //             ]);
+    //         } else {
+    //             return response()->json([
+    //                 'error' => 'Overtime not found'
+    //             ], 404);
+    //         }
+    //     } else {
+    //         return response()->json([
+    //             'error' => 'Unauthorized'
+    //         ], 401);
     //     }
-
-    //     $token = Auth::guard('employees')->login($user);
-
-    //     $response = [
-    //         'data' => [
-    //             'message' => 'Password change successfully',
-    //             'token' => $token,
-    //         ]
-    //     ];
-
-    //     return response()->json($response, 200);
     // }
+
+    public function updateOvertimeStatus(Request $request, Overtime $overtime)
+    {
+        $this->authorize('update', $overtime);
+
+        $data = $request->validate([
+            'status' => 'required|in:' . implode(',', [
+                Overtime::STATUS_PENDING,
+                Overtime::STATUS_APPROVED,
+                Overtime::STATUS_DECLINED,
+            ]),
+        ]);
+
+        $overtime->update($data);
+
+        return response()->json([
+            'message' => 'Overtime status updated successfully',
+            'overtime' => $overtime,
+        ]);
+    }
 }

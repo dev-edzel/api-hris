@@ -29,6 +29,7 @@ class StoreOvertimeRequest extends FormRequest
             'date_end' => 'required|date',
             'end_time' => 'required',
             'duration' => 'required|integer',
+            'status' => 'in:pending,approved,declined',
         ];
     }
 }

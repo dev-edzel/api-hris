@@ -34,8 +34,12 @@ Route::group([
     Route::post('clock-out', [AttendanceController::class, 'clockOut']);
 
     //FILE-OVERTIME
-    Route::get('overtime', [OvertimeController::class, 'index'] );
-    Route::post('overtime', [OvertimeController::class, 'store'] );
+    Route::get('overtime', [OvertimeController::class, 'index']);
+    Route::post('overtime', [OvertimeController::class, 'store']);
+
+    //STATUS
+    Route::post('overtime/{overtime}/approve', [OvertimeController::class,'approve']);
+    Route::post('overtime/{overtime}/decline', [OvertimeController::class,'decline']);
 });
 
 //ADMIN-SIDE

@@ -13,6 +13,7 @@ class OvertimeController extends Controller
     {
         $overtimeData = $request->validated();
         $overtimeData['employee_id'] = Auth::guard('employee')->user()->id;
+        $overtimeData['status'] = Overtime::STATUS_PENDING;
 
         $overtime = Overtime::create($overtimeData);
 

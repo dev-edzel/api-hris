@@ -20,6 +20,7 @@ return new class extends Migration
             $table->date('date_end');
             $table->time('end_time');
             $table->integer('duration');
+            $table->string('status')->default(App\Models\Overtime::STATUS_PENDING);
             $table->timestamps();
         });
     }
