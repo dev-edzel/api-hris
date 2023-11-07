@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\API\V1\Admin\AdminController;
+use App\Http\Controllers\API\V1\AttendanceController;
+use App\Http\Controllers\API\V1\EmployeeController;
+use App\Http\Controllers\API\V1\OvertimeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +18,31 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+//EMPLOYEE-SIDE
+Route::post('register', [EmployeeController::class, 'register']);
+Route::post('login', [EmployeeController::class, 'login']);
+
+Route::group(['middleware' => ['auth:employee']], function () {
+  Route::post('logout', [EmployeeController::class, 'logout']);
+  Route::post('refresh', [EmployeeController::class, 'refresh']);
+  Route::get('profile', [EmployeeController::class, 'profile']);
+
+  //ATTENDANCE
+  Route::post('clock-in', [AttendanceController::class, 'clockIn']);
+  Route::post('clock-out', [AttendanceController::class, 'clockOut']);
+
+  //FILE OVERTIME
+  Route::apiResource('overtime', OvertimeController::class)->only(['store']);
+});
+
+//ADMIN-SIDE
+Route::prefix('admin')->group(function () {
+    Route::post('register', [AdminController::class, 'register']);
+    Route::post('login', [AdminController::class, 'login']);
+
+    Route::group(['middleware' => ['auth:admin']], function () {
+      Route::post('logout', [AdminController::class, 'logout']);
+      Route::post('refresh', [AdminController::class, 'refresh']);
+      Route::get('profile', [AdminController::class, 'profile']);
+    });
 });

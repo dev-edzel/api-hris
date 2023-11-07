@@ -2,16 +2,22 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Auth\Authenticatable as AuthenticableTrait;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class User extends Authenticatable implements JWTSubject
+class Employee extends Model implements Authenticatable, JWTSubject
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory, Notifiable, AuthenticableTrait;
+
+    protected $guard = 'employees';
+
+    protected $table = 'employees';
 
     /**
      * The attributes that are mass assignable.
@@ -22,6 +28,7 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'department_id',
     ];
 
     /**
@@ -34,16 +41,6 @@ class User extends Authenticatable implements JWTSubject
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
-
     public function getJWTCustomClaims()
     {
         return [];
@@ -52,5 +49,15 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTIdentifier()
     {
         return $this->getKey();
+    }
+
+    public function department(): BelongsTo
+    {
+        return $this->belongsTo(Department::class);
+    }
+
+    public function attendance(): HasMany
+    {
+        return $this->hasMany(Attendance::class);
     }
 }
