@@ -60,4 +60,9 @@ class Employee extends Model implements Authenticatable, JWTSubject
     {
         return $this->hasMany(Attendance::class);
     }
+
+    public function overtime(): HasMany
+    {
+        return $this->hasMany(Overtime::class);
+    }
 }

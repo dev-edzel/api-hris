@@ -16,4 +16,9 @@ class Department extends Model
     {
         return $this->hasMany(Employee::class);
     }
+
+    public function overtime(): HasMany
+    {
+        return $this->hasMany(Overtime::class);
+    }
 }

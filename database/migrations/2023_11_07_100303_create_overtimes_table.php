@@ -11,18 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('overtime', function (Blueprint $table) {
+        Schema::create('overtimes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('employee_id');
-            $table->string('name');
+            $table->foreignId('employee_id')->constrained();
             $table->string('purpose');
-            $table->date('start_date');
+            $table->date('date_start');
             $table->time('start_time');
-            $table->date('end_date');
+            $table->date('date_end');
+            $table->time('end_time');
             $table->integer('duration');
             $table->timestamps();
-
-            $table->foreign('employee_id')->references('id')->on('employees');
         });
     }
 
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('overtime');
+        Schema::dropIfExists('overtimes');
     }
 };

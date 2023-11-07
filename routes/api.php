@@ -22,17 +22,20 @@ use Illuminate\Support\Facades\Route;
 Route::post('register', [EmployeeController::class, 'register']);
 Route::post('login', [EmployeeController::class, 'login']);
 
-Route::group(['middleware' => ['auth:employee']], function () {
-  Route::post('logout', [EmployeeController::class, 'logout']);
-  Route::post('refresh', [EmployeeController::class, 'refresh']);
-  Route::get('profile', [EmployeeController::class, 'profile']);
+Route::group([
+    'middleware' => ['auth:employee']
+], function () {
+    Route::post('logout', [EmployeeController::class, 'logout']);
+    Route::post('refresh', [EmployeeController::class, 'refresh']);
+    Route::get('profile', [EmployeeController::class, 'profile']);
 
-  //ATTENDANCE
-  Route::post('clock-in', [AttendanceController::class, 'clockIn']);
-  Route::post('clock-out', [AttendanceController::class, 'clockOut']);
+    //ATTENDANCE
+    Route::post('clock-in', [AttendanceController::class, 'clockIn']);
+    Route::post('clock-out', [AttendanceController::class, 'clockOut']);
 
-  //FILE OVERTIME
-  Route::apiResource('overtime', OvertimeController::class)->only(['store']);
+    //FILE-OVERTIME
+    Route::get('overtime', [OvertimeController::class, 'index'] );
+    Route::post('overtime', [OvertimeController::class, 'store'] );
 });
 
 //ADMIN-SIDE

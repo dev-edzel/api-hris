@@ -23,11 +23,11 @@ class StoreOvertimeRequest extends FormRequest
     {
         return [
             'employee_id' => 'required|exists:employees,id',
-            'name' => 'required',
             'purpose' => 'required',
-            'start_date' => 'required|date',
-            'start_time' => 'required|date_format:H:i:s',
-            'end_date' => 'required|date',
+            'date_start' => 'required|date',
+            'start_time' => 'required',
+            'date_end' => 'required|date',
+            'end_time' => 'required',
             'duration' => 'required|integer',
         ];
     }
