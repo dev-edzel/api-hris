@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\V1\Admin\AdminController;
 use App\Http\Controllers\API\V1\AttendanceController;
 use App\Http\Controllers\API\V1\EmployeeController;
+use App\Http\Controllers\API\V1\LeaveController;
 use App\Http\Controllers\API\V1\OvertimeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -34,12 +35,12 @@ Route::group([
     Route::post('clock-out', [AttendanceController::class, 'clockOut']);
 
     //FILE-OVERTIME
-    Route::get('overtime', [OvertimeController::class, 'index']);
-    Route::post('overtime', [OvertimeController::class, 'store']);
+    Route::get('overtime', [OvertimeController::class, 'allRecords']);
+    Route::post('overtime', [OvertimeController::class, 'fileOvertime']);
 
     //STATUS
-    Route::post('overtime/{overtime}/approve', [OvertimeController::class,'approve']);
-    Route::post('overtime/{overtime}/decline', [OvertimeController::class,'decline']);
+    Route::post('overtime/{overtime}/approve', [OvertimeController::class,'updateOvertimeStatus']);
+    Route::post('overtime/{overtime}/decline', [OvertimeController::class,'updateOvertimeStatus']);
 });
 
 //ADMIN-SIDE

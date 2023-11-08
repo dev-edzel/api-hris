@@ -4,7 +4,9 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 
+use App\Models\Employee;
 use App\Models\Overtime;
+use App\Policies\EmployeePolicy;
 use App\Policies\OvertimePolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -17,6 +19,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Overtime::class => OvertimePolicy::class,
+        // Employee::class => EmployeePolicy::class,
     ];
 
     /**
@@ -26,4 +29,6 @@ class AuthServiceProvider extends ServiceProvider
     {
         //
     }
+
+
 }
