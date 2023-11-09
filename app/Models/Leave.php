@@ -6,29 +6,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Overtime extends Model
+class Leave extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'employee_id',
-        'department',
-        'purpose',
-        'date_start',
-        'start_time',
-        'date_end',
-        'end_time',
-        'duration',
+        'start_date',
+        'end_date',
+        'reason',
         'status',
     ];
 
     public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class);
-    }
-
-    public function department(): BelongsTo
-    {
-        return $this->belongsTo(Department::class);
     }
 }

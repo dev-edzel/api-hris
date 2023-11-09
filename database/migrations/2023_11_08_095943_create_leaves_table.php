@@ -11,15 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('overtimes', function (Blueprint $table) {
+        Schema::create('leaves', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employee_id')->constrained();
-            $table->string('purpose');
-            $table->date('date_start');
-            $table->time('start_time');
-            $table->date('date_end');
-            $table->time('end_time');
-            $table->integer('duration');
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->string('reason');
             $table->string('status')->default(App\Models\Status::STATUS_PENDING);
             $table->timestamps();
         });
@@ -30,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('overtimes');
+        Schema::dropIfExists('leaves');
     }
 };

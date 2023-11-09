@@ -41,6 +41,10 @@ Route::group([
     //STATUS
     Route::post('overtime/{overtime}/approve', [OvertimeController::class,'updateOvertimeStatus']);
     Route::post('overtime/{overtime}/decline', [OvertimeController::class,'updateOvertimeStatus']);
+
+    //FILE-LEAVE
+    Route::get('leave', [LeaveController::class, 'allRecords']);
+    Route::post('leave', [LeaveController::class, 'fileLeave']);
 });
 
 //ADMIN-SIDE

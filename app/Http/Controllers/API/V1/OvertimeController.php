@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOvertimeRequest;
 use App\Models\Overtime;
+use App\Models\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,7 +25,7 @@ class OvertimeController extends Controller
     {
         $overtimeData = $request->validated();
         $overtimeData['employee_id'] = Auth::guard('employee')->user()->id;
-        $overtimeData['status'] = Overtime::STATUS_PENDING;
+        $overtimeData['status'] = Status::STATUS_PENDING;
 
         $overtime = Overtime::create($overtimeData);
 
@@ -40,9 +41,9 @@ class OvertimeController extends Controller
 
         $data = $request->validate([
             'status' => 'required|in:' . implode(',', [
-                Overtime::STATUS_PENDING,
-                Overtime::STATUS_APPROVED,
-                Overtime::STATUS_DECLINED,
+                Status::STATUS_PENDING,
+                Status::STATUS_APPROVED,
+                Status::STATUS_DECLINED,
             ]),
         ]);
 
